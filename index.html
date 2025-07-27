@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Street Eats Supply - B2B Procurement</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&family=Montserrat:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body>
+    <header class="no-print">
+        <div class="header-content">
+            <div class="logo">
+                <img src="apna_mandi_logo.png" alt="Street Eats Supply Logo" class="company-logo">
+                <a href="#" id="homeLink">Apna Mandi</a>
+            </div>
+            <button class="hamburger-menu no-print" id="hamburgerMenu">
+                <i class="fas fa-bars"></i>
+            </button>
+            <nav id="mainNav">
+                <ul>
+                    <li><a href="#" data-section="browseProducts">Browse Products</a></li>
+                    <li><a href="#" data-section="quickOrder">Quick Order</a></li>
+                    <li><a href="#" data-section="orderHistory">My Orders</a></li>
+                    <li><a href="#" data-section="myAddresses">My Addresses</a></li>
+                </ul>
+            </nav>
+            <div class="header-icons">
+                <div class="search-box">
+                    <input type="text" id="globalSearchInput" placeholder="Search products...">
+                    <i class="fas fa-search"></i>
+                </div>
+                <div class="cart-icon" id="cartIcon">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span id="cartCount" class="cart-count">0</span>
+                </div>
+                <button class="auth-button" id="logoutBtn" style="display: none;"><i class="fas fa-sign-out-alt"></i> Logout</button>
+                <button class="auth-button" id="loginRegisterBtn"><i class="fas fa-user-circle"></i> Login/Register</button>
+            </div>
+        </div>
+    </header>
+    <div id="mobileNavOverlay" class="mobile-nav-overlay no-print">
+        <div class="mobile-nav-content">
+            <button class="close-mobile-nav" id="closeMobileNav"><i class="fas fa-times"></i></button>
+            <nav>
+                <ul>
+                    <li><a href="#" data-section="browseProducts"><i class="fas fa-store"></i> Browse Products</a></li>
+                    <li><a href="#" data-section="quickOrder"><i class="fas fa-list-alt"></i> Quick Order</a></li>
+                    <li><a href="#" data-section="orderHistory"><i class="fas fa-history"></i> My Orders</a></li>
+                    <li><a href="#" data-section="myAddresses"><i class="fas fa-map-marker-alt"></i> My Addresses</a></li>
+                    <li><a href="#" id="mobileLogoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+
+
+    <main class="container">
+        <section id="authSection" class="page-section active">
+            <h2>Welcome to Street Eats Supply</h2>
+            <p class="section-description">Your one-stop solution for sourcing quality raw materials for your street food business.</p>
+
+            <div class="auth-forms">
+                <div class="auth-form">
+                    <h3>Login</h3>
+                    <form id="loginForm">
+                        <label for="loginEmail">Email:</label>
+                        <input type="email" id="loginEmail" placeholder="business@example.com" required>
+                        <label for="loginPassword">Password:</label>
+                        <input type="password" id="loginPassword" required>
+                        <button type="submit">Login</button>
+                        <p class="error-message" id="loginError"></p>
+                    </form>
+                </div>
+                <div class="auth-form">
+                    <h3>Register Your Business</h3>
+                    <form id="registerForm">
+                        <label for="regBusinessName">Business Name:</label>
+                        <input type="text" id="regBusinessName" placeholder="e.g., Spicy Corner Chaat" required>
+                        <label for="regContactPerson">Contact Person:</label>
+                        <input type="text" id="regContactPerson" placeholder="Your Name" required>
+                        <label for="regEmail">Email:</label>
+                        <input type="email" id="regEmail" placeholder="your@business.com" required>
+                        <label for="regPassword">Password:</label>
+                        <input type="password" id="regPassword" required>
+                        <label for="regGSTIN">GSTIN (Optional):</label>
+                        <input type="text" id="regGSTIN" placeholder="e.g., 27ABCDE1234F1Z5">
+                        <label for="regFSSAI">FSSAI License No.:</label>
+                        <input type="text" id="regFSSAI" placeholder="e.g., 12345678901234" required>
+                        <button type="submit">Register</button>
+                        <p class="error-message" id="registerError"></p>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <section id="vendorDashboard" class="page-section hidden">
+            <h2 id="dashboardWelcome">Welcome, Souvik!</h2>
+            <div class="dashboard-grid">
+                <div class="dashboard-card" data-section="quickOrder">
+                    <i class="fas fa-list-alt"></i>
+                    <h3>Quick Order</h3>
+                    <p>Rapidly reorder your staple supplies.</p>
+                </div>
+                <div class="dashboard-card" data-section="browseProducts">
+                    <i class="fas fa-store"></i>
+                    <h3>Browse Products</h3>
+                    <p>Explore our full catalog of raw materials.</p>
+                </div>
+                <div class="dashboard-card" data-section="orderHistory">
+                    <i class="fas fa-history"></i>
+                    <h3>My Orders</h3>
+                    <p>View your past orders and their status.</p>
+                </div>
+                <div class="dashboard-card" data-section="myAddresses">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <h3>My Addresses</h3>
+                    <p>Manage your delivery locations.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="browseProducts" class="page-section hidden">
+            <h2>Browse All Products</h2>
+            <div class="filters">
+                <div class="filter-group">
+                    <label for="categoryFilterBrowse">Category:</label>
+                    <select id="categoryFilterBrowse">
+                        <option value="all">All Categories</option>
+                        <option value="vegetables">Vegetables</option>
+                        <option value="spices">Spices</option>
+                        <option value="dairy">Dairy & Staples</option>
+                        <option value="oils">Oils & Fats</option>
+                        <option value="packaging">Packaging</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="priceRangeBrowse">Max Price (per Unit):</label>
+                    <input type="range" id="priceRangeBrowse" min="0" max="1000" value="1000">
+                    <span id="priceValueBrowse">INR 1000+</span>
+                </div>
+            </div>
+            <div id="productGrid" class="product-grid">
+                </div>
+            <p id="noBrowseResults" class="hidden text-center">No products found matching your criteria.</p>
+        </section>
+
+        <section id="quickOrder" class="page-section hidden">
+            <h2>Quick Order Form</h2>
+            <p class="section-description">Quickly add multiple items to your cart by typing quantities. Prices adjust based on total quantity and apply discounts.</p>
+            <div class="search-bar">
+                <input type="text" id="quickOrderSearchInput" placeholder="Search product for quick order...">
+            </div>
+            <form id="quickOrderForm">
+                <div class="table-responsive">
+                    <table class="quick-order-table">
+                        <thead>
+                            <tr>
+                                <th>Product</th>
+                                <th>Base Price</th>
+                                <th>MOQ</th>
+                                <th>Tiered Discounts</th>
+                                <th>Quantity</th>
+                            </tr>
+                        </thead>
+                        <tbody id="quickOrderTableBody">
+                            </tbody>
+                    </table>
+                </div>
+                <p id="noQuickOrderResults" class="hidden text-center">No products found for quick order matching your search.</p>
+                <button type="submit" class="add-all-to-cart-btn"><i class="fas fa-cart-plus"></i> Add Selected to Cart</button>
+            </form>
+        </section>
+
+        <section id="orderHistory" class="page-section hidden">
+            <h2>My Order History</h2>
+            <ul id="orderHistoryList">
+                </ul>
+            <p id="noOrdersMessage" class="hidden text-center">You haven't placed any orders yet.</p>
+        </section>
+
+        <section id="myAddresses" class="page-section hidden">
+            <h2>My Delivery Addresses</h2>
+            <form id="addAddressForm" class="address-form">
+                <h3>Add New Address</h3>
+                <label for="addressLine1">Address Line 1:</label>
+                <input type="text" id="addressLine1" required>
+                <label for="addressLine2">Address Line 2 (Optional):</label>
+                <input type="text" id="addressLine2">
+                <label for="city">City:</label>
+                <input type="text" id="city" required>
+                <label for="state">State:</label>
+                <input type="text" id="state" required>
+                <label for="pincode">Pincode:</label>
+                <input type="text" id="pincode" pattern="[0-9]{6}" title="6 digit pincode" required>
+                <button type="submit">Save Address</button>
+            </form>
+            <h3>Your Saved Addresses:</h3>
+            <ul id="addressList">
+                </ul>
+            <p id="noAddressesMessage" class="hidden text-center">No addresses saved yet. Add one above!</p>
+        </section>
+
+        <div id="cartModal" class="modal hidden no-print">
+            <div class="modal-content">
+                <span class="close-button" data-modal="cartModal">&times;</span>
+                <h3>Your Shopping Cart</h3>
+                <ul id="cartItemsList">
+                    </ul>
+                <div id="cartSummary">
+                    <p>Total Items: <span id="cartTotalItems">0</span></p>
+                    <p>Subtotal: <span id="cartSubtotal">INR 0.00</span></p>
+                    <p class="cart-gst-line">GST (5%): <span id="cartGSTAmount">INR 0.00</span></p>
+                    <p class="cart-grand-total-line">Grand Total: <span id="cartGrandTotal">INR 0.00</span></p>
+                </div>
+                <div class="cart-actions">
+                    <button class="primary-btn" id="proceedToCheckoutBtn"><i class="fas fa-credit-card"></i> Proceed to Checkout</button>
+                    <button class="secondary-btn" id="clearCartBtn"><i class="fas fa-trash-alt"></i> Clear Cart</button>
+                    <p class="error-message" id="cartError"></p>
+                </div>
+            </div>
+        </div>
+
+        <section id="checkoutSection" class="page-section hidden">
+            <h2>Checkout</h2>
+            <p class="section-description">Review your order, select delivery address, and choose your payment method.</p>
+            <div class="checkout-layout">
+                <div class="checkout-details">
+                    <h3>Order Summary</h3>
+                    <ul id="checkoutSummaryList">
+                        </ul>
+                    <div class="checkout-totals">
+                        <p>Total Items: <span id="checkoutTotalItems">0</span></p>
+                        <p>Subtotal: <span id="checkoutSubtotal">INR 0.00</span></p>
+                        <p class="checkout-gst-line">GST (5%): <span id="checkoutGSTAmount">INR 0.00</span></p>
+                        <p class="delivery-fee-info">Delivery Fee: <span id="checkoutDeliveryFee">INR 50.00</span></p>
+                        <p class="grand-total">Grand Total: <span id="checkoutGrandTotal">INR 0.00</span></p>
+                    </div>
+
+                    <h3>Delivery Information</h3>
+                    <div class="form-group">
+                        <label for="deliveryAddressSelect">Select Delivery Address:</label>
+                        <select id="deliveryAddressSelect" required>
+                            <option value="">Select an address</option>
+                            </select>
+                        <button class="add-new-address-btn" id="addAddressFromCheckoutBtn"><i class="fas fa-plus"></i> Add New Address</button>
+                        <p class="error-message" id="addressError"></p>
+                    </div>
+
+                    <h3>Payment & Billing</h3>
+                    <div class="form-group">
+                        <label>Payment Method:</label>
+                        <div class="payment-options">
+                            <label><input type="radio" name="paymentMethod" value="upi" checked> UPI / Online Payment</label>
+                            <label><input type="radio" name="paymentMethod" value="pod"> Cash on Delivery (COD)</label>
+                            <label><input type="radio" name="paymentMethod" value="credit"> Credit Line (Net 30)</label>
+                        </div>
+                    </div>
+                    <p class="credit-info hidden" id="creditLineInfo"><i class="fas fa-info-circle"></i> Your available credit limit: INR 5,000.00 (Dummy)</p>
+                    <p class="pod-info hidden" id="podInfo"><i class="fas fa-info-circle"></i> Cash or UPI accepted upon delivery.</p>
+
+                    <button class="primary-btn" id="placeOrderBtn"><i class="fas fa-paper-plane"></i> Place Order</button>
+                    <p class="error-message" id="checkoutError"></p>
+                </div>
+            </div>
+        </section>
+
+        <div id="orderSuccessModal" class="modal hidden no-print">
+            <div class="modal-content">
+                <span class="close-button" data-modal="orderSuccessModal">&times;</span>
+                <div class="modal-body text-center">
+                    <i class="fas fa-check-circle success-icon"></i>
+                    <h2>Order Placed Successfully!</h2>
+                    <p>Your order <strong id="successOrderId">#SES-2025-XXXX</strong> has been placed.</p>
+                    <p class="small-text">You will receive SMS/WhatsApp updates shortly (mock functionality).</p>
+                    <button class="primary-btn" id="goToOrdersBtn"><i class="fas fa-list-alt"></i> View My Orders</button>
+                    <button class="secondary-btn" id="continueShoppingBtn"><i class="fas fa-shopping-basket"></i> Continue Shopping</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="productDetailModal" class="modal hidden no-print">
+            <div class="modal-content">
+                <span class="close-button" data-modal="productDetailModal">&times;</span>
+                <div class="modal-body product-detail-layout">
+                    <img id="modalProductImage" src="" alt="Product Image">
+                    <div class="modal-details">
+                        <h3 id="modalProductName"></h3>
+                        <p class="modal-product-price" id="modalProductPrice"></p>
+                        <p id="modalProductDescription"></p>
+                        <p><strong>Category:</strong> <span id="modalProductCategory"></span></p>
+                        <p><strong>MOQ:</strong> <span id="modalProductMOQ"></span></p>
+                        <p><strong>Supplier:</strong> <span id="modalProductSupplier"></span> (Rating: <span id="modalProductSupplierRating"></span>/5)</p>
+                        <h4>Tiered Discounts:</h4>
+                        <ul id="modalProductTieredPricing">
+                            </ul>
+                        <button class="add-to-cart-btn" id="modalAddToCartBtn" data-id="">
+                            <i class="fas fa-cart-plus"></i> Add to Cart
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="invoiceModal" class="modal hidden">
+            <div class="modal-content invoice-content">
+                <span class="close-button" data-modal="invoiceModal">&times;</span> <div class="invoice-header">
+                    <div class="company-info">
+                        <h2>Street Eats Supply</h2>
+                        <p>Raw Material Procurement Platform</p>
+                        <p>123, Street Food Lane, Delhi - 110001</p>
+                        <p>GSTIN: AAAA1234BBBB1Z5</p>
+                    </div>
+                    <div class="invoice-meta">
+                        <h3>TAX INVOICE</h3>
+                        <p>Invoice No: <strong id="invoiceNumber"></strong></p>
+                        <p>Date: <strong id="invoiceDate"></strong></p>
+                        <p>Order ID: <strong id="invoiceOrderId"></strong></p>
+                    </div>
+                </div>
+
+                <div class="billing-shipping-info">
+                    <div class="billing-info">
+                        <h4>Billed To:</h4>
+                        <p><strong id="invoiceCustomerName"></strong></p>
+                        <p id="invoiceCustomerGSTIN"></p>
+                        <p id="invoiceCustomerFSSAI"></p>
+                        <p>Payment Method: <span id="invoicePaymentMethod"></span></p>
+                    </div>
+                    <div class="shipping-info">
+                        <h4>Ship To:</h4>
+                        <p id="invoiceShippingAddress1"></p>
+                        <p id="invoiceShippingAddress2"></p>
+                        <p id="invoiceShippingCityStatePincode"></p>
+                    </div>
+                </div>
+
+                <div class="invoice-items">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Item Description</th>
+                                <th class="text-right">Qty</th>
+                                <th class="text-right">Unit Price (INR)</th>
+                                <th class="text-right">GST (5%)</th>
+                                <th class="text-right">Total (INR)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="invoiceItemsTableBody">
+                            </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="5" class="text-right">Subtotal:</td>
+                                <td class="text-right"><strong id="invoiceSubtotal"></strong></td>
+                            </tr>
+                            <tr>
+                                <td colspan="5" class="text-right">GST (5%):</td>
+                                <td class="text-right"><strong id="invoiceTotalGST"></strong></td>
+                            </tr>
+                            <tr>
+                                <td colspan="5" class="text-right">Delivery Fee:</td>
+                                <td class="text-right"><strong id="invoiceDeliveryFee"></strong></td>
+                            </tr>
+                            <tr>
+                                <td colspan="5" class="text-right">Grand Total:</td>
+                                <td class="text-right"><strong id="invoiceGrandTotal"></strong></td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+
+                <div class="invoice-footer-details">
+                    <p class="thank-you">Thank you for your business!</p>
+                </div>
+
+                <div class="invoice-actions no-print">
+                    <button class="primary-btn" id="printInvoiceBtn"><i class="fas fa-print"></i> Print / Save as PDF</button>
+                    <button class="secondary-btn" data-modal="invoiceModal"><i class="fas fa-times"></i> Close</button>
+                </div>
+            </div>
+        </div>
+
+        <section id="termsAndConditions" class="page-section hidden">
+            <h2>Terms & Conditions</h2>
+            <p><strong>Last Updated: July 27, 2025</strong></p>
+            <p>Welcome to Street Eats Supply! These Terms & Conditions ("Terms") govern your use of our B2B raw material procurement platform (the "Platform"). By accessing or using the Platform, you agree to be bound by these Terms.</p>
+            <h3>1. Account Registration</h3>
+            <p>To use the Platform, you must register a business account. You agree to provide accurate, current, and complete information during the registration process, including your Business Name, Contact Person, Email, Password, GSTIN (if applicable), and FSSAI License Number. Your account may be subject to a verification process by our administration.</p>
+            <h3>2. Orders and Pricing</h3>
+            <ul>
+                <li><strong>Unit Pricing:</strong> Products are listed with clear unit pricing (e.g., per kg, per Litre, per Case).</li>
+                <li><strong>Tiered/Volume Pricing:</strong> Prices may vary based on order quantity. Discounts (e.g., 5% off for 5 units, 10% off for 10 units) are applied automatically based on the tiered pricing structure displayed on the product page.</li>
+                <li><strong>GST:</strong> A Goods and Services Tax (GST) of 5% will be applied to the subtotal of your order.</li>
+                <li><strong>Delivery Fee:</strong> A standard delivery fee of INR 50.00 applies to all orders.</li>
+            </ul>
+            <h3>3. Payment Options</h3>
+            <p>We offer various payment methods, including UPI/Online Payment, Cash on Delivery (COD), and Credit Line (Net 30) for approved businesses. All transactions are subject to our payment policies and applicable laws.</p>
+            <h3>4. Order Fulfillment & Delivery</h3>
+            <p>While we strive for timely delivery, delivery times may vary. We are not responsible for delays caused by unforeseen circumstances. Order status updates will be provided (mock functionality).</p>
+            <h3>5. Intellectual Property</h3>
+            <p>All content on the Platform, including text, graphics, logos, and software, is the property of Street Eats Supply or its licensors and is protected by intellectual property laws.</p>
+            <h3>6. Limitation of Liability</h3>
+            <p>Street Eats Supply will not be liable for any indirect, incidental, special, consequential, or punitive damages, or any loss of profits or revenues, whether incurred directly or indirectly, or any loss of data, use, goodwill, or other intangible losses, resulting from (a) your access to or use of or inability to access or use the Platform; (b) any conduct or content of any third party on the Platform; or (c) unauthorized access, use, or alteration of your transmissions or content.</p>
+            <h3>7. Governing Law</h3>
+            <p>These Terms shall be governed and construed in accordance with the laws of India, without regard to its conflict of law provisions.</p>
+            <h3>8. Changes to Terms</h3>
+            <p>We reserve the right to modify these Terms at any time. We will provide notice of such changes by updating the "Last Updated" date at the top of these Terms. Your continued use of the Platform after any such changes constitutes your acceptance of the new Terms.</p>
+            <p>For any questions regarding these Terms, please contact us at support@streeteatssupply.com.</p>
+        </section>
+
+        <section id="privacyPolicy" class="page-section hidden">
+            <h2>Privacy Policy</h2>
+            <p><strong>Last Updated: July 27, 2025</strong></p>
+            <p>Your privacy is important to Street Eats Supply. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our B2B raw material procurement platform.</p>
+            <h3>1. Information We Collect</h3>
+            <p>We may collect personal identification information, such as your business name, contact person name, email address, phone number, GSTIN, and FSSAI License Number. We may also collect billing and shipping addresses, order history, and payment details (though actual payment processing is not handled by this demo).</p>
+            <h3>2. How We Use Your Information</h3>
+            <p>We use the information collected to: process your orders, manage your account, fulfill delivery requests, provide customer support, improve our services, and communicate with you regarding your orders and promotional offers (if you opt-in).</p>
+            <h3>3. Disclosure of Your Information</h3>
+            <p>We may share your information with third-party service providers who perform services on our behalf, such as delivery partners and payment processors. We may also disclose information if required by law or to protect our rights.</p>
+            <h3>4. Data Security</h3>
+            <p>We implement various security measures to maintain the safety of your personal information. However, no electronic transmission over the Internet or information storage technology can be guaranteed to be 100% secure.</p>
+            <h3>5. Your Choices</h3>
+            <p>You can review and change your personal information by logging into your account. You may opt-out of receiving certain communications from us.</p>
+            <h3>6. Third-Party Websites</h3>
+            <p>Our Platform may contain links to third-party websites. We are not responsible for the privacy practices or the content of these third-party sites.</p>
+            <h3>7. Changes to This Privacy Policy</h3>
+            <p>We may update this Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy on this page and updating the "Last Updated" date.</p>
+            <p>By using the Platform, you consent to the data practices described in this Privacy Policy. If you have any questions, please contact us at privacy@streeteatssupply.com.</p>
+        </section>
+
+        <section id="adminDashboard" class="page-section hidden">
+            <h2>Admin Dashboard - All Orders</h2>
+            <p class="section-description">Manage all vendor orders and update their statuses.</p>
+            <div class="search-bar">
+                <input type="text" id="adminOrderSearchInput" placeholder="Search orders by ID, Business Name, or Product...">
+            </div>
+            <div class="table-responsive">
+                <table class="quick-order-table">
+                    <thead>
+                        <tr>
+                            <th>Order ID</th>
+                            <th>Vendor</th>
+                            <th>Total</th>
+                            <th>Date</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="adminOrderTableBody">
+                        </tbody>
+                </table>
+            </div>
+            <p id="noAdminOrdersMessage" class="hidden text-center">No orders found.</p>
+        </section>
+    </main>
+
+    <footer class="no-print">
+        <p>&copy; 2025 Street Eats Supply. All rights reserved.</p>
+        <div class="footer-links">
+            <a href="#" data-section="termsAndConditions">Terms & Conditions</a>
+            <span class="footer-divider">|</span>
+            <a href="#" data-section="privacyPolicy">Privacy Policy</a>
+        </div>
+    </footer>
+
+    <button class="admin-login-fab no-print" id="adminLoginFab">
+        <i class="fas fa-user-shield"></i>
+    </button>
+
+    <div id="adminLoginModal" class="modal hidden no-print">
+        <div class="modal-content">
+            <span class="close-button" data-modal="adminLoginModal">&times;</span>
+            <h3>Admin Login</h3>
+            <form id="adminLoginForm">
+                <label for="adminUsername">Username:</label>
+                <input type="text" id="adminUsername" required>
+                <label for="adminPassword">Password:</label>
+                <input type="password" id="adminPassword" required>
+                <button type="submit">Login</button>
+                <p class="error-message" id="adminLoginError"></p>
+            </form>
+        </div>
+    </div>
+
+
+    <script src="script.js"></script>
+</body>
+</html>
